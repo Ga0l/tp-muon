@@ -29,7 +29,7 @@ void Analysis::End()
 {
 // Things to do after the event loop (save data, close file, free memory...)
   data->Write("data");
-  DTs->Write("data");
+  DTs->Write("DTs");
   histh1->Write("histh1");
   histh2->Write("histh2");
  

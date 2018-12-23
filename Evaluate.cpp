@@ -33,8 +33,8 @@ void Evaluate::Histogram()
 void Evaluate::Fit()
 {
 // Fitting the histogram created with Histogram()
-    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])", 200, 30000);
-    FitFunction->SetParNames("F", "A", "tau", "B", "tau2");
+    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2]) + [1]*exp(-x/[3])", 200, 30000);
+    FitFunction->SetParNames("F", "A", "tau", "tau2");
     FitFunction->SetParameters(87, 1e4, 2e3);
     //FitFunction->SetParLimits(4, 1e3, 3e3);
     //FitFunction->SetParLimits(2, 1.8e3, 2.5e3);
