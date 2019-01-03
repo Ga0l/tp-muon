@@ -21,6 +21,7 @@ public:
 private:
   TNtuple* data;
   TNtuple* DTs;
+  TNtuple* DT_AltSigCalc;
   TFile* file;
   int nEvt;
   int nSamples;
