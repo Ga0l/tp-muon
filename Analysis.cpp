@@ -21,7 +21,7 @@ void Analysis::Begin()
 
   data = new TNtuple("data","data","index:t1:t2:dt");
   DTs   =  new TNtuple("DTs","DTs","dt20:dt25:dt30:dt35:dt40");
-  DT_AltSigCalc =  new TNtuple("DTs","DTs","t1_alt:t2_alt:dt_alt");
+  DT_AltSigCalc =  new TNtuple("DTs","DTs","t1:t2:dt");
   histh1 = new TH1D("h1", "Height of the first peak", 100, 0, 200);
   histh2 = new TH1D("h2", "Height of the second peak", 100, 0, 200);
   nEvt = 0;
