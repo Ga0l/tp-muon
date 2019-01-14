@@ -17,8 +17,8 @@ std::string file = "data.root";
 if(argv>=1) file = argc[1];
 
 TFile* rootfile = new TFile(file.c_str());
-TNtuple* datainput = (TNtuple*)rootfile->Get("data_AltSigCalc");
-TNtuple* DTinput = (TNtuple*)rootfile->Get("data");
+TNtuple* datainput = (TNtuple*)rootfile->Get("data");
+TNtuple* DTinput = (TNtuple*)rootfile->Get("data_cuts");
 
 
 _EVALUATE_ eva(datainput, DTinput);

@@ -25,7 +25,7 @@ void Evaluate::Begin(){
 void Evaluate::Histogram()
 {
 // Filling the histogram with the dt values from TNtuple
-    Hist = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
+    Hist = new TH1D("Hist", "Histogram of dt", 200, 0, 30000);
     Hist->Sumw2();
     data->Draw("dt>>Hist");
 }
@@ -48,27 +48,27 @@ void Evaluate::Fit()
 void Evaluate::MultiFit(){
     //Fitting all the histograms with different cuts
 
-    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])", 200, 29000);
+    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])", 200, 30000);
     FitFunction->SetParNames("F", "A", "tau", "B", "tau2");
     FitFunction->SetParameters(87, 1e4, 2e3);
 
-    TH1D* Hist20 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
+    TH1D* Hist20 = new TH1D("Hist", "Histogram of dt", 200, 0, 30000);
     Hist20->Sumw2();
     DTs->Draw("dt20>>Hist");
 
-    TH1D* Hist25 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
+    TH1D* Hist25 = new TH1D("Hist", "Histogram of dt", 200, 0, 30000);
     Hist25->Sumw2();
     DTs->Draw("dt25>>Hist");
 
-    TH1D* Hist30 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
+    TH1D* Hist30 = new TH1D("Hist", "Histogram of dt", 200, 0, 30000);
     Hist30->Sumw2();
     DTs->Draw("dt30>>Hist");
 
-    TH1D* Hist35 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
+    TH1D* Hist35 = new TH1D("Hist", "Histogram of dt", 200, 0, 30000);
     Hist35->Sumw2();
     DTs->Draw("dt35>>Hist");
 
-    TH1D* Hist40 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
+    TH1D* Hist40 = new TH1D("Hist", "Histogram of dt", 200, 0, 30000);
     Hist40->Sumw2();
     DTs->Draw("dt40>>Hist");
 

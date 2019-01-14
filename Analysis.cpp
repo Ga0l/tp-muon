@@ -31,7 +31,7 @@ void Analysis::End()
 {
 // Things to do after the event loop (save data, close file, free memory...)
   data->Write("data");
-  DTs->Write("data");
+  DTs->Write("data_cuts");
   DT_AltSigCalc->Write("data_AltSigCalc");
   histh1->Write("histh1");
   histh2->Write("histh2");
@@ -58,6 +58,10 @@ bool Analysis::IsSignal(UCTMEvent* evt, int index, double Th){
   for(int j = index ; j < index +20; j++){
     value =-evt->Data[j]*evt->Gain;
     max = std::max(value, max);
+
+    if(max < threshold){
+      return false;
+    }
   }
 
   for(int j = index-10 ; j < index +20; j++){
@@ -96,7 +100,7 @@ if(false){
 // Peak finding
 //double threshold = 20.0;
  double t = 0, t1 = -1, t2 =-1, dt;
- double h1, h2, I1, I2;
+ double h1= -1 , h2= -1, I1, I2;
  double t1_alt = -1, t2_alt = -1, dt_alt = 0;
  //double value;
 
