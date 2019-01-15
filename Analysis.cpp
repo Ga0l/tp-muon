@@ -85,6 +85,9 @@ double AltSigCalc(UCTMEvent* evt, int index, int range){
         D_mean += D/(2*double(range));
     }
     double i_0 =  - value_m/D_mean + index;
+    if(i_0 < -100 || i_0 > 10000){
+        i_0 = index;
+    }
     return i_0 * evt->SamplingTime;
 }
 
