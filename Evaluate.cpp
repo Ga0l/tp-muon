@@ -25,7 +25,7 @@ void Evaluate::Begin(){
 void Evaluate::Histogram()
 {
 // Filling the histogram with the dt values from TNtuple
-    Hist = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
+    Hist = new TH1D("Hist", "Histogram of dt", 200, 0, 30000);
     Hist->Sumw2();
     data->Draw("dt>>Hist");
 }
@@ -33,44 +33,45 @@ void Evaluate::Histogram()
 void Evaluate::Fit()
 {
 // Fitting the histogram created with Histogram()
-    FitFunction = new TF1("f", "[0] + [1]/(1+[2])*exp(-x/[3])*(1/[3]*([2]+exp(-x/[4]))+1/[4]*exp(-x/[4]))", 200, 30000);
-    FitFunction->SetParNames("BG", "N", "rho", "tau", "tau1");
-    FitFunction->SetParameters(87, 1e4, 1.2, 2e3, 1.6e3);
-    //FitFunction->SetParLimits(4, 1e3, 3e3);
-    //FitFunction->SetParLimits(2, 1.8e3, 2.5e3);
+    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[3]) + [1]*[2]*exp(-x/[4])", 200, 30000);
+    FitFunction->SetParNames("BG", "N", "R", "tau1", "tau2");
+    FitFunction->SetParameters(87, 1e4, 8, 2e3, 1.6e3);
+    FitFunction->SetParLimits(4, 1e3, 3e3);
+    FitFunction->SetParLimits(3,  1e3, 3e3);
     //FitFunction->SetParLimits(3, 0, 1e2);
-    Hist->Fit("f", "R");
+    TFitResultPtr Results = Hist->Fit("f", "RS");
+    //Results->Print("V");   // print full information of fit including covariance matrix
 
 }
 
 
 void Evaluate::MultiFit(){
     //Fitting all the histograms with different cuts
-    
+
     FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])", 200, 29000);
     FitFunction->SetParNames("F", "A", "tau", "B", "tau2");
     FitFunction->SetParameters(87, 1e4, 2e3);
-    
+
     TH1D* Hist20 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
     Hist20->Sumw2();
     DTs->Draw("dt20>>Hist");
-    
+
     TH1D* Hist25 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
     Hist25->Sumw2();
     DTs->Draw("dt25>>Hist");
-    
+
     TH1D* Hist30 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
     Hist30->Sumw2();
     DTs->Draw("dt30>>Hist");
-    
+
     TH1D* Hist35 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
     Hist35->Sumw2();
     DTs->Draw("dt35>>Hist");
-    
+
     TH1D* Hist40 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
     Hist40->Sumw2();
     DTs->Draw("dt40>>Hist");
-    
+
     std::cout<<"20"<<std::endl;
     Hist20->Fit("f", "R");
     std::cout<<"25"<<std::endl;
@@ -82,7 +83,7 @@ void Evaluate::MultiFit(){
     std::cout<<"40"<<std::endl;
     Hist40->Fit("f", "R");
 }
-    
+
 
 
 void Evaluate::End(){
