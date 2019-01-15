@@ -18,10 +18,9 @@ if(argv>=1) file = argc[1];
 
 TFile* rootfile = new TFile(file.c_str());
 TNtuple* datainput = (TNtuple*)rootfile->Get("data_AltSigCalc");
-TNtuple* DTinput = (TNtuple*)rootfile->Get("data");
 
 
-_EVALUATE_ eva(datainput, DTinput);
+_EVALUATE_ eva(datainput);
 
 
 // before loop
@@ -31,7 +30,6 @@ eva.Histogram();
 
 eva.Fit();
 
-eva.MultiFit();
 
 
 // after loop

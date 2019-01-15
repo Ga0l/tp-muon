@@ -9,19 +9,17 @@
 
 class Evaluate{
 public:
-	Evaluate(TNtuple* data, TNtuple* DTs);
+	Evaluate(TNtuple* data);
 	~Evaluate();
 
   void Begin();
   void End();
   void Histogram();
   void Fit();
-  void MultiFit();
 
 private:
   TFile* file;
   TNtuple* data;
-  TNtuple* DTs;
 
   TH1D* Hist;
   TF1* FitFunction;
