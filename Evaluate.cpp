@@ -83,6 +83,12 @@ void Evaluate::MultiFit(){
     Hist35->Fit("f", "R");
     std::cout<<"40"<<std::endl;
     Hist40->Fit("f", "R");
+
+    Hist25->Write("Hist25");
+    Hist30->Write("Hist30");
+    Hist35->Write("Hist35");
+    Hist40->Write("Hist40");
+
 }
 
 
