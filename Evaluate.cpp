@@ -26,7 +26,7 @@ void Evaluate::Histogram()
 // Filling the histogram with the dt values from TNtuple
     Hist = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
     Hist->Sumw2();
-    //data->Draw("dt>>Hist");
+    data->Draw("dt>>Hist");
 }
 
 void Evaluate::Fit()
@@ -39,7 +39,7 @@ void Evaluate::Fit()
     //FitFunction->SetParLimits(4, 1e3, 3e3);
     //FitFunction->SetParLimits(2, 1.8e3, 2.5e3);
     //FitFunction->SetParLimits(3, 0, 1e2);
-    //Hist->Fit("f", "R");
+    Hist->Fit("f", "R");
 
 }
 

@@ -18,7 +18,7 @@ if(argv > 1){
     file = argc[1];
 }
 TFile* rootfile = new TFile(file.c_str());
-TNtuple* datainput = (TNtuple*)rootfile->Get("data_AltSigCalc");
+TNtuple* datainput = (TNtuple*)rootfile->Get("data_adv");
 
 
 _EVALUATE_ eva(datainput);
