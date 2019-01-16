@@ -58,7 +58,7 @@ TRandom* RanGen = new TRandom();
 
 // procedure
 double Ppm = 1.268/2; //muon+ to muon- ration
-double PSB = 0.8; //Signal to Background ration
+double PSB = 0.7; //Signal to Background ration
 double Pcp = 0.05;
 //
 

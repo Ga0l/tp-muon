@@ -32,7 +32,7 @@ void Evaluate::Histogram()
 void Evaluate::Fit()
 {
 // Fitting the histogram created with Histogram()
-    std::cout<<"Fit using the data without Cuts"<<std::endl;
+    std::cout<<"Fit .."<<std::endl;
     FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])", 200, 30000);
     FitFunction->SetParNames("F", "A", "tau");
     FitFunction->SetParameters(87, 1e4, 2e3);
