@@ -14,8 +14,9 @@ int main(int argv, char* argc[])
 {
 // read command line for inpue file
 std::string file = "data.root";
-if(argv>=1) file = argc[1];
-
+if(argv > 1){
+    file = argc[1];
+}
 TFile* rootfile = new TFile(file.c_str());
 TNtuple* datainput = (TNtuple*)rootfile->Get("data_AltSigCalc");
 

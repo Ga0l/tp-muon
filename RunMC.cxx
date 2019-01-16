@@ -19,7 +19,9 @@ if(argv>1){
 }
 TFile* file = new TFile("MC_data.root","recreate");
 TNtuple* data = new TNtuple("data","data","dt");
+TNtuple* data_adv = new TNtuple("data_adv","data_adv","dt");
 
+//// singe pdf procedure
 // Setting up PDF
 double A = 1.95365e+03;
 double F = 8.81427e+01;
@@ -42,7 +44,57 @@ for (NbEvt = 0; NbEvt < NbMax ; NbEvt++)
   }
 std::cout << "Processed events : " << NbEvt << std::endl;
 
+
+
+//// Full Stochastic procedure
+TF1 *pf1 = new TF1("pf1", "[0]*exp(-x/[1])",100, 30000);
+pf1->SetParNames("N", "tau");
+pf1->SetParameters(A, tau);
+TF1 *pf2 = new TF1("pf2", "[0]*exp(-x/[1])",100, 30000);
+pf2->SetParNames("N", "tau");
+pf2->SetParameters(A, tau);
+TRandom* RanGen = new TRandom();
+
+
+// procedure
+double Ppm = 1.268/2; //muon+ to muon- ration
+double PSB = 0.8; //Signal to Background ration
+double Pcp = 0.05;
+//
+
+for (NbEvt = 0; NbEvt < NbMax ; NbEvt++)
+    {
+    if(NbEvt%1000==0) std::cout << NbEvt << "\r" << std::flush;
+
+    if(((double)rand() / (double)RAND_MAX) >= PSB){
+        // Background
+        dt = RanGen->Uniform(100,30000);
+    }
+    else if(((double)rand() / (double)RAND_MAX) < Ppm){
+        // muon-
+        dt = pf1->GetRandom();
+    }
+    else{
+        // muon+
+        if(((double)rand() / (double)RAND_MAX) < Pcp){
+            // Muon capture
+            dt = RanGen->Uniform(100,30000);
+        }
+        else{
+            dt = pf2->GetRandom();
+        }
+    }
+
+
+    data_adv->Fill(dt);
+  }
+std::cout << "Processed events : " << NbEvt << std::endl;
+
+
+//// End
 data->Write("data");
+data_adv->Write("data_adv");
+
 file->Close();
 return 0;
 }
