@@ -33,7 +33,7 @@ void Evaluate::Histogram()
 void Evaluate::Fit()
 {
 // Fitting the histogram created with Histogram()
-<<<<<<< HEAD
+
     FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])*(1/[2] + (1/[2]+[3])*exp(-x*[3])/[4])", 200, 30000);
     FitFunction->SetParNames("BG", "N", "tau", "lambdaC", "rho");
     FitFunction->SetParameters(87, 1e4, 2.19e3, 1.268, 3.76e4);
@@ -44,16 +44,7 @@ void Evaluate::Fit()
     FitFunction->FixParameter(3, 102.6e-6);
     
     Hist->Fit("f", "R");
-=======
-    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[3]) + [1]*[2]*exp(-x/[4])", 200, 30000);
-    FitFunction->SetParNames("BG", "N", "R", "tau1", "tau2");
-    FitFunction->SetParameters(87, 1e4, 8, 2e3, 1.6e3);
-    FitFunction->SetParLimits(4, 1e3, 3e3);
-    FitFunction->SetParLimits(3,  1e3, 3e3);
-    //FitFunction->SetParLimits(3, 0, 1e2);
-    TFitResultPtr Results = Hist->Fit("f", "RS");
-    //Results->Print("V");   // print full information of fit including covariance matrix
->>>>>>> b5894ee1e45e7e0b3fcbc5807444dd90e456b13d
+
 
 }
 
