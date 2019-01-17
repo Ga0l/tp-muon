@@ -31,8 +31,6 @@ eva.Histogram();
 
 eva.Fit();
 
-eva.MultiFit();
-
 
 // after loop
 eva.End();
