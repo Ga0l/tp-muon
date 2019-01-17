@@ -52,7 +52,6 @@ void Evaluate::Fit()
 void Evaluate::MultiFit(){
     //Fitting all the histograms with different cuts
 
-<<<<<<< HEAD
     FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])", 200, 30000);
     FitFunction->SetParNames("F", "A", "tau", "B", "tau2");
     FitFunction->SetParameters(87, 1e4, 2e3);
@@ -78,32 +77,7 @@ void Evaluate::MultiFit(){
     DTs->Draw("dt40>>Hist");
 
     std::cout<<"Fits using the data with thresholds beeing applied"<<std::endl;
-=======
-    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])", 200, 29000);
-    FitFunction->SetParNames("F", "A", "tau", "B", "tau2");
-    FitFunction->SetParameters(87, 1e4, 2e3);
 
-    TH1D* Hist20 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
-    Hist20->Sumw2();
-    DTs->Draw("dt20>>Hist");
-
-    TH1D* Hist25 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
-    Hist25->Sumw2();
-    DTs->Draw("dt25>>Hist");
-
-    TH1D* Hist30 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
-    Hist30->Sumw2();
-    DTs->Draw("dt30>>Hist");
-
-    TH1D* Hist35 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
-    Hist35->Sumw2();
-    DTs->Draw("dt35>>Hist");
-
-    TH1D* Hist40 = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
-    Hist40->Sumw2();
-    DTs->Draw("dt40>>Hist");
-
->>>>>>> fit
     std::cout<<"20"<<std::endl;
     Hist20->Fit("f", "R");
     std::cout<<"25"<<std::endl;
