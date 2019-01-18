@@ -9,7 +9,7 @@
 
 class Evaluate{
 public:
-	Evaluate(TNtuple* data, TNtuple* DTs);
+	Evaluate(TFile * inputfile);
 	~Evaluate();
 
   void Begin();
@@ -21,9 +21,11 @@ public:
 private:
   TFile* file;
   TNtuple* data;
+  TNtuple* altdata;  
   TNtuple* DTs;
 
   TH1D* Hist;
+  TH1D* AltHist;
   TF1* FitFunction;
   int nEvt;
 };

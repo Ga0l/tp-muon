@@ -5,10 +5,11 @@
 
 
 ///////////////////////////////////////////////////////
-Evaluate::Evaluate(TNtuple* datainput, TNtuple* DTinput){
+Evaluate::Evaluate(TFile * inputfile){
 ///////////////////////////////////////////////////////
-  data = datainput;
-  DTs = DTinput;
+  data = (TNtuple*)inputfile->Get("data");
+  altdata = (TNtuple*)inputfile->Get("data_AltSigCalc");
+  DTs = (TNtuple*)inputfile->Get("data_cuts");
 }
 
 ///////////////////////////////////////////////////////
@@ -28,22 +29,26 @@ void Evaluate::Histogram()
     Hist = new TH1D("Hist", "Histogram of dt", 200, 0, 30000);
     Hist->Sumw2();
     data->Draw("dt>>Hist");
+
+    AltHist = new TH1D("AltHist", "Histogram of dt", 200, 0, 30000);
+    AltHist->Sumw2();
+    altdata->Draw("dt>>AltHist");
 }
 
 void Evaluate::Fit()
 {
 // Fitting the histogram created with Histogram()
 
-    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])*(1/[2] + (1/[2]+[3])*exp(-x*[3])/[4])", 200, 30000);
+    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])*(1/[2] + (1/[2]+[3])*exp(-x*[3])/[4])", 300, 30000);
     FitFunction->SetParNames("BG", "N", "tau", "lambdaC", "rho");
-    FitFunction->SetParameters(87, 1e6, 2.19e3, 102.6e-6, 1.268);
-    //FitFunction->SetParLimits(4, 1e3, 3e3);
-    //FitFunction->SetParLimits(2, 1.8e3, 2.5e3);
-    //FitFunction->SetParLimits(3, 0, 1e2);
+    FitFunction->SetParameters(220, 5.5e6, 2.19e3, 102.6e-6, 1.268);
     FitFunction->FixParameter(4, 1.268);
     FitFunction->FixParameter(3, 102.6e-6);
     
     Hist->Fit("f", "R");
+    std::cout << "Chi2/Ndof =" << FitFunction->GetChisquare()/Hist->GetNbinsX() << std::endl;
+    AltHist->Fit("f", "R");
+    std::cout << "Chi2/Ndof =" << FitFunction->GetChisquare()/AltHist->GetNbinsX() << std::endl;
 
 
 }
@@ -100,5 +105,6 @@ void Evaluate::MultiFit(){
 
 void Evaluate::End(){
     Hist->Write("Hist");
+    AltHist->Write("AltHist");
     file->Close();
 }

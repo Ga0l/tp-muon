@@ -17,12 +17,10 @@ std::string file = "data.root";
 if(argv>=1) file = argc[1];
 
 TFile* rootfile = new TFile(file.c_str());
-TNtuple* datainput = (TNtuple*)rootfile->Get("data_AltSigCalc");
-TNtuple* simpledata = (TNtuple*)rootfile->Get("data");
-TNtuple* DTinput = (TNtuple*)rootfile->Get("data_cuts");
 
 
-_EVALUATE_ eva(datainput, DTinput);
+
+ _EVALUATE_ eva(rootfile);
 
 
 // before loop
@@ -36,18 +34,5 @@ eva.Fit();
 // after loop
 eva.End();
  
-_EVALUATE_ simpleva(simpledata, DTinput);
-
-
-// before loop
-simpleva.Begin();
-
-simpleva.Histogram();
-
-simpleva.Fit();
-
-
-// after loop
-eva.End();
 return 0;
 }
