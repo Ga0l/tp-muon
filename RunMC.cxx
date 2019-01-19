@@ -11,11 +11,19 @@
 int main(int argv, char* argc[])
 {
 // initialization
-int NbMax = 10000;
+int NbMax_DT  = 10000;
+int NbMax_PDF = 10000;
 if(argv>1){
-    std::cout << "Events : " << argc[1] << std::endl;
 
-    NbMax = TString(argc[1]).Atoi();
+    NbMax_PDF = TString(argc[1]).Atoi();
+    if (argv>2){
+        NbMax_DT = TString(argc[2]).Atoi();
+    }
+    else{
+        NbMax_DT = NbMax_PDF;
+    }
+    std::cout << "Events for PDF: " << NbMax_PDF << std::endl;
+    std::cout << "Events for DT: "  << NbMax_DT  << std::endl;
 }
 TFile* file = new TFile("MC_data.root","recreate");
 TNtuple* data = new TNtuple("data","data","dt");
@@ -38,9 +46,9 @@ f1->SetParameters(BG,N,tau,lambdaC,rho);
 // Iteration
 double dt;
 int NbEvt;
-for (NbEvt = 0; NbEvt < NbMax ; NbEvt++)
+for (NbEvt = 0; NbEvt < NbMax_PDF ; NbEvt++)
   {
-  if(NbEvt%1000==0) std::cout << NbEvt << "\r" << std::flush;
+  if(NbEvt%1000==0) std::cout << (int)((double)NbEvt/(double)NbMax_PDF *100) << "\t"<< NbEvt << "\r" << std::flush;
 
   dt = f1->GetRandom();
 
@@ -77,7 +85,7 @@ double PSB = 0.59; //Signal to Background ration
 int NP=0, NM=0, NB=0, NC=0, Nm = 0;
 
 double t_bkg, te, tC;
-for (NbEvt = 0; NbEvt < NbMax ; NbEvt++)
+for (NbEvt = 0; NbEvt < NbMax_DT ; NbEvt++)
     {
     if(NbEvt%1000==0) std::cout << NbEvt << "\r" << std::flush;
 
