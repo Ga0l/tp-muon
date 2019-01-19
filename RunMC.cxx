@@ -74,7 +74,7 @@ double Ppm = rho/2; //muon+ / muon- ration
 double PSB = 0.59; //Signal to Background ration
 //
 
-int NP=0, NM=0, NB=0;
+int NP=0, NM=0, NB=0, NC=0, Nm = 0;
 
 double t_bkg, te, tC;
 for (NbEvt = 0; NbEvt < NbMax ; NbEvt++)

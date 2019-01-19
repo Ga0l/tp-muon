@@ -5,9 +5,10 @@
 
 
 ///////////////////////////////////////////////////////
-Evaluate::Evaluate(TNtuple* datainput){
+Evaluate::Evaluate(TFile * inputfile){
 ///////////////////////////////////////////////////////
-  data = datainput;
+  PDF_data = (TNtuple*)inputfile->Get("data");
+  DT_data = (TNtuple*)inputfile->Get("data_adv");
 }
 
 ///////////////////////////////////////////////////////
@@ -24,29 +25,39 @@ void Evaluate::Begin(){
 void Evaluate::Histogram()
 {
 // Filling the histogram with the dt values from TNtuple
-    Hist = new TH1D("Hist", "Histogram of dt", 500, 0, 30000);
-    Hist->Sumw2();
-    data->Draw("dt>>Hist");
+    PDF_Hist = new TH1D("PDF_Hist", "Histogram of dt", 200, 0, 30000);
+    PDF_Hist->Sumw2();
+    PDF_data->Draw("dt>>PDF_Hist");
+
+    DT_Hist = new TH1D("DT_Hist", "Histogram of dt", 200, 0, 30000);
+    DT_Hist->Sumw2();
+    DT_data->Draw("dt>>DT_Hist");
 }
 
 void Evaluate::Fit()
 {
 // Fitting the histogram created with Histogram()
-    std::cout<<"Fit .."<<std::endl;
-    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])", 200, 30000);
-    FitFunction->SetParNames("F", "A", "tau");
-    FitFunction->SetParameters(87, 1e4, 2e3);
-    //FitFunction->SetParLimits(4, 1e3, 3e3);
-    //FitFunction->SetParLimits(2, 1.8e3, 2.5e3);
-    //FitFunction->SetParLimits(3, 0, 1e2);
-    Hist->Fit("f", "R");
+
+    FitFunction = new TF1("f", "[0] + [1]*exp(-x/[2])*(1/[2] + (1/[2]+[3])*exp(-x*[3])/[4])", 300, 30000);
+    FitFunction->SetParNames("BG", "N", "tau", "lambdaC", "rho");
+    FitFunction->SetParameters(220, 5.5e6, 2.19e3, 102.6e-6, 1.268);
+    FitFunction->FixParameter(4, 1.268);
+    FitFunction->FixParameter(3, 102.6e-6);
+
+    std::cout << "Single-PDF MC" << std::endl;
+    PDF_Hist->Fit("f", "R");
+    std::cout << "Chi2/Ndof =" << FitFunction->GetChisquare()/PDF_Hist->GetNbinsX() << std::endl;
+    std::cout << "Decision-Tree MC" << std::endl;
+    DT_Hist->Fit("f", "R");
+    std::cout << "Chi2/Ndof =" << FitFunction->GetChisquare()/DT_Hist->GetNbinsX() << std::endl;
+
 
 }
 
 
 
-
 void Evaluate::End(){
-    Hist->Write("Hist");
+    PDF_Hist->Write("PDF_Hist");
+    DT_Hist->Write("DT_Hist");
     file->Close();
 }
