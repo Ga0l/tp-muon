@@ -11,7 +11,7 @@
 int main(int argv, char* argc[])
 {
 // initialization
-int NbMax_DT  = 10000;
+int NbMax_DT  = 100000;
 int NbMax_PDF = 10000;
 if(argv>1){
 
@@ -73,12 +73,12 @@ TRandom* RanGen = new TRandom();
 double lambda = 6.666666666666667e-05;
 
 TF1 *pf3 = new TF1("pf3", "[1] * exp(-x*[0])",50, 30000);
-pf2->SetParNames("lambda,N");
-pf2->SetParameters(lambda,1./lambda);
+pf3->SetParNames("lambda,N");
+pf3->SetParameters(lambda,1./lambda);
 
 
 // procedure
-double Ppm = rho/2; //muon+ / muon- ration
+ double Ppm = 1/(1+1/rho); //muon+ / muon- ration
 double PSB = 0.59; //Signal to Background ration
 //
 
@@ -95,18 +95,18 @@ for (NbEvt = 0; NbEvt < NbMax_DT ; NbEvt++)
         dt = t_bkg;
         NB++;
     }
-    else if(((double)rand() / (double)RAND_MAX) > Ppm){
-        // muon-
+    else if(((double)rand() / (double)RAND_MAX) < Ppm){
+        // muon+
         dt = pf1->GetRandom();
         dt = std::min(dt,t_bkg);
-        NM++;
+        NP++;
     }
     else{
-        // muon+
+        // muon-
         te = pf1->GetRandom();
         tC = pf2->GetRandom();
         dt = std::min(te ,std::min(tC ,t_bkg));
-        NP++;
+        NM++;
     }
 
 

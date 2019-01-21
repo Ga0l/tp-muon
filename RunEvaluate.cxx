@@ -13,7 +13,7 @@
 int main(int argv, char* argc[])
 {
 // read command line for inpue file
-std::string file = "data.root";
+std::string file = "MC_data.root";
 if(argv > 1){
     file = argc[1];
 }
