@@ -25,9 +25,18 @@ if(argv>1){
     std::cout << "Events for PDF: " << NbMax_PDF << std::endl;
     std::cout << "Events for DT: "  << NbMax_DT  << std::endl;
 }
+double irritation = 0;
+if(argv>3){
+    irritation = TString(argc[3]).Atoi();
+}
+
+
+
 TFile* file = new TFile("MC_data.root","recreate");
 TNtuple* data = new TNtuple("data","data","dt");
 TNtuple* data_adv = new TNtuple("data_adv","data_adv","dt");
+TRandom* RanGen = new TRandom();
+
 
 //// singe pdf procedure
 // Setting up PDF
@@ -45,16 +54,25 @@ f1->SetParameters(BG,N,tau,lambdaC,rho);
 
 // Iteration
 double dt;
+double Ddt;
+double checkvariable;
 int NbEvt;
 for (NbEvt = 0; NbEvt < NbMax_PDF ; NbEvt++)
   {
   if(NbEvt%1000==0) std::cout << (int)((double)NbEvt/(double)NbMax_PDF *100) << "\t"<< NbEvt << "\r" << std::flush;
 
   dt = f1->GetRandom();
+  if(irritation > 0){
+      Ddt = RanGen->Gaus(0,irritation);
+      dt += Ddt;
+      checkvariable += abs(Ddt);
+  }
 
   data->Fill(dt);
   }
 std::cout << "Processed events : " << NbEvt << std::endl;
+std::cout << "checkvariable : " << checkvariable/(double)NbMax_PDF*1.25331 << std::endl;
+
 
 
 
@@ -68,7 +86,6 @@ pf1->SetParameters(1, tauP);
 TF1 *pf2 = new TF1("pf2", "[0]*(1/[1]) * exp(-x/[1])",100, 30000);
 pf2->SetParNames("N", "tauC");
 pf2->SetParameters(1, tauC);
-TRandom* RanGen = new TRandom();
 
 double lambda = 6.666666666666667e-05;
 
