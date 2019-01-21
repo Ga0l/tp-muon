@@ -35,7 +35,8 @@ if(argv>3){
 TFile* file = new TFile("MC_data.root","recreate");
 TNtuple* data = new TNtuple("data","data","dt");
 TNtuple* data_adv = new TNtuple("data_adv","data_adv","dt");
-TRandom* RanGen = new TRandom();
+TRandom* RanGen = new TRandom(0);
+gRandom->SetSeed(0);
 
 
 //// singe pdf procedure
