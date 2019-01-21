@@ -42,7 +42,8 @@ TRandom* RanGen = new TRandom();
 // Setting up PDF
 double BG = 220;
 double N = 5.5e6;
-double tau = 2.193e+03;
+double tau = 2.197e+03;
+ double lambda = 1./tau;
 double lambdaC = 102.6e-6;
 double tauC = 1/lambdaC;
 double rho = 1.268;
@@ -87,21 +88,15 @@ TF1 *pf2 = new TF1("pf2", "[0]*(1/[1]) * exp(-x/[1])",100, 30000);
 pf2->SetParNames("N", "tauC");
 pf2->SetParameters(1, tauC);
 
-double lambda = 6.666666666666667e-05;
-
-TF1 *pf3 = new TF1("pf3", "[1] * exp(-x*[0])",50, 30000);
-pf3->SetParNames("lambda,N");
-pf3->SetParameters(lambda,1./lambda);
-
-
 // procedure
  double Ppm = 1/(1+1/rho); //muon+ / muon- ration
-double PSB = 0.59; //Signal to Background ration
+ double PSB = 0.59; //Signal to Background ration
+ double Pc = lambdaC/(lambda + lambdaC);
 //
 
-int NP=0, NM=0, NB=0, NC=0, Nm = 0;
+int NP=0, NM=0, NB=0;
 
-double t_bkg, te, tC;
+double t_bkg, te;
 for (NbEvt = 0; NbEvt < NbMax_DT ; NbEvt++)
     {
     if(NbEvt%1000==0) std::cout << NbEvt << "\r" << std::flush;
@@ -120,10 +115,15 @@ for (NbEvt = 0; NbEvt < NbMax_DT ; NbEvt++)
     }
     else{
         // muon-
-        te = pf1->GetRandom();
-        tC = pf2->GetRandom();
-        dt = std::min(te ,std::min(tC ,t_bkg));
-        NM++;
+        if(((double)rand() / (double)RAND_MAX) < Pc){
+	  // capture
+	  continue; //Nothing is detected
+	}
+	else{
+	  te = pf1->GetRandom();
+	  dt = std::min(te ,t_bkg);
+	  NM++;
+	}
     }
 
 
